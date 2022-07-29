@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     lateinit var numberTextView: TextView
     lateinit var addNumberBTN: Button
+    lateinit var subtractNumberBTN: Button
     private val viewModel: AddNumberViewModel by lazy {
         ViewModelProvider(this)[AddNumberViewModel::class.java]
     }
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         numberTextView = findViewById(R.id.number_TextView)
         addNumberBTN = findViewById(R.id.add_number_button)
+        subtractNumberBTN = findViewById(R.id.subtract_number_button)
 
         rendering()
 
@@ -30,6 +32,12 @@ class MainActivity : AppCompatActivity() {
             //Send
             lifecycleScope.launch {
                 viewModel.intentChannel.send(MainIntent.AddNumber)
+            }
+        }
+
+        subtractNumberBTN.setOnClickListener{
+            lifecycleScope.launch {
+                viewModel.intentChannel.send(MainIntent.SubtractNumber)
             }
         }
     }

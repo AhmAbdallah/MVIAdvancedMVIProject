@@ -30,15 +30,32 @@ class AddNumberViewModel: ViewModel() {
             intentChannel.consumeAsFlow().collect {
                 when (it) {
                     is MainIntent.AddNumber -> addNumber()
+                    is  MainIntent.SubtractNumber -> subtractNumer()
                 }
             }
         }
     }
+
+
     //Reduce
-    private  fun addNumber() {
+    private fun addNumber() {
         viewModelScope.launch {
             _viewState.value = try {
                 MainViewState.Number(++ number)
+            } catch (e: Exception) {
+                MainViewState.Error(e.message!!)
+            }
+        }
+    }
+
+    private fun subtractNumer() {
+        viewModelScope.launch {
+            _viewState.value = try {
+                if (number == 0) {
+                    MainViewState.Error("Can not subtract number, add number before subtact it")
+                } else {
+                    MainViewState.Number(--number)
+                }
             } catch (e: Exception) {
                 MainViewState.Error(e.message!!)
             }
